@@ -18,4 +18,16 @@ client.once(Events.ClientReady, (c) => {
 
 client.on(Events.InteractionCreate, interactionHandler);
 
+client.on('speech', (msg) => {
+  // If bot didn't recognize speech, content will be empty
+  if (!msg.content) return;
+
+  const msgText = msg.content.toLowerCase();
+
+  console.log(msgText);
+  if (msgText.startsWith('hola')) {
+    client.channels.cache.get('769956408509988914').send('m!play ' + msgText);
+  }
+});
+
 module.exports = { client };

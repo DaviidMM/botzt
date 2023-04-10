@@ -1,15 +1,23 @@
+const { addSpeechEvent } = require('discord-speech-recognition');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const path = require('node:path');
 const { getCommandFiles } = require('../../utils');
 // Import DISCORD_TOKEN from .env file
 require('dotenv').config();
-const { DISCORD_TOKEN } = process.env;
+const { DISCORD_TOKEN, GOOGLE_SPEECH_API, GOOGLE_SPEECH_LANGUAGE } =
+  process.env;
 
 const createDiscordClient = () => {
   const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates]
   });
   loadClientCommands(client, path.join(__dirname, '../../commands'));
+
+  // Add speech event to client
+  addSpeechEvent(client, {
+    lang: GOOGLE_SPEECH_LANGUAGE || 'es-ES'
+    // key: GOOGLE_SPEECH_API
+  });
 
   // Log in to Discord with your client's token
   client.login(DISCORD_TOKEN);
